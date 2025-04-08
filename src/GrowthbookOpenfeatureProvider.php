@@ -6,18 +6,17 @@ use Growthbook\FeatureResult;
 use Growthbook\Growthbook;
 use OpenFeature\implementation\common\Metadata;
 use OpenFeature\implementation\provider\AbstractProvider;
-use OpenFeature\interfaces\common\LoggerAwareTrait;
 use OpenFeature\implementation\provider\ResolutionDetailsBuilder;
+use OpenFeature\interfaces\common\LoggerAwareTrait;
 use OpenFeature\interfaces\flags\EvaluationContext;
 use OpenFeature\interfaces\provider\Provider;
 use OpenFeature\interfaces\provider\ResolutionDetails as IResolutionDetails;
 
 class GrowthbookOpenfeatureProvider extends AbstractProvider implements Provider
 {
-
     use LoggerAwareTrait;
-    protected static string $NAME = self::class;
 
+    protected static string $NAME = self::class;
 
     public function getMetadata(): Metadata
     {
@@ -27,8 +26,8 @@ class GrowthbookOpenfeatureProvider extends AbstractProvider implements Provider
     public function __construct(
         private Growthbook $growthbook,
         public readonly string $clientKey,
-        public readonly string $apiHost = "",
-        public readonly string $decryptionKey = "",
+        public readonly string $apiHost = '',
+        public readonly string $decryptionKey = '',
     ) {
         $this->growthbook->initialize(
             clientKey: $clientKey,
@@ -36,7 +35,6 @@ class GrowthbookOpenfeatureProvider extends AbstractProvider implements Provider
             decryptionKey: $decryptionKey
         );
     }
-
 
     public function resolveBooleanValue(string $flagKey, bool $defaultValue, ?EvaluationContext $context = null): IResolutionDetails
     {
@@ -65,6 +63,7 @@ class GrowthbookOpenfeatureProvider extends AbstractProvider implements Provider
         return $this->resolveValue(flagKey: $flagKey, context: $context, defaultValue: $defaultValue);
 
     }
+
     public function initialize()
     {
         $this->growthbook->initialize(
@@ -73,7 +72,6 @@ class GrowthbookOpenfeatureProvider extends AbstractProvider implements Provider
             decryptionKey: $this->decryptionKey
         );
     }
-
 
     private function toResolutionDetails(FeatureResult $feature, mixed $defaultValue): IResolutionDetails
     {
@@ -93,6 +91,7 @@ class GrowthbookOpenfeatureProvider extends AbstractProvider implements Provider
     public function resolveValue(string $flagKey, ?EvaluationContext $context, mixed $defaultValue): IResolutionDetails
     {
         $this->growthbook->withAttributes(attributes: (array) $context->getAttributes()->toArray());
+
         return $this->toResolutionDetails(
             feature: $this->growthbook->getFeature(
                 key: $flagKey,
