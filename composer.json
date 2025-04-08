@@ -1,46 +1,67 @@
 {
-    "name": ":vendor_slug/:package_slug",
-    "description": ":package_description",
+    "name": "gathern/growthbook-openfeature-provider",
+    "description": "this package provide growthbook (a feature flag serice) provider to  openfeature ",
     "keywords": [
-        ":vendor_name",
-        ":package_slug"
+        "Gathern",
+        "growthbook-openfeature-provider"
     ],
-    "homepage": "https://github.com/:vendor_slug/:package_slug",
+    "homepage": "https://github.com/gathern/growthbook-openfeature-provider",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": "author@domain.com",
+            "name": "mahmoud shaband",
+            "email": "mshaband@gmail.com",
             "role": "Developer"
         }
     ],
     "require": {
-        "php": "^8.4"
+        "php": "^8.1",
+        "growthbook/growthbook": "^1.7",
+        "guzzlehttp/guzzle": "^7.9",
+        "open-feature/sdk": "^2.0",
+        "illuminate/contracts": "^10.48 | ^11.0|^12.0"
     },
     "require-dev": {
-        :require_dev_testing,
-        :require_dev_codestyle,
-        "spatie/ray": "^1.28"
+        "laravel/pint": "^1.20",
+        "pestphp/pest": "^2.36",
+        "phpstan/phpstan": "^2.1",
+        "rector/rector": "^2.0",
+        "symfony/var-dumper": "^6.4"
     },
     "autoload": {
         "psr-4": {
-            "VendorName\\Skeleton\\": "src"
+            "Gathern\\GrowthbookOpenfeatureProvider\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "VendorName\\Skeleton\\Tests\\": "tests"
+            "Gathern\\GrowthbookOpenfeatureProvider\\Tests\\": "tests"
         }
     },
     "scripts": {
-        :scripts_testing,
-        :scripts_codestyle
+        "test-coverage": "vendor/bin/pest --colors=always --coverage --parallel --min=100",
+        "format": "vendor/bin/pint",
+        "refacto": "rector",
+        "lint": "pint",
+        "test:refacto": "rector --dry-run",
+        "test:lint": "pint --test",
+        "test:typos": "peck",
+        "test:types": "phpstan analyse --ansi",
+        "test:unit": "pest",
+        "test": [
+            "@test:refacto",
+            "@test:lint",
+            "@test:typos",
+            "@test:types",
+            "@test-coverage"
+        ]
     },
     "config": {
         "sort-packages": true,
         "allow-plugins": {
-            :plugins_testing,
-            "phpstan/extension-installer": true
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true,
+            "php-http/discovery": true
         }
     },
     "minimum-stability": "dev",
