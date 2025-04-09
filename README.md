@@ -1,4 +1,4 @@
-# this package provide growthbook (a feature flag serice) provider to  openfeature 
+# This package provides a GrowthBook feature flag service provider for OpenFeature
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/gathern/growthbook-openfeature-provider.svg?style=flat-square)](https://packagist.org/packages/gathern/growthbook-openfeature-provider)
 [![Tests](https://img.shields.io/github/actions/workflow/status/gathern/growthbook-openfeature-provider/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/gathern/growthbook-openfeature-provider/actions/workflows/run-tests.yml)
@@ -49,7 +49,7 @@ Please review [our security policy](../../security/policy) on how to report secu
 
 ## Credits
 
-- [mahmoud shaband](https://github.com/shabandinho)
+- [Mahmoud Shaband](https://github.com/shaband)
 - [All Contributors](../../contributors)
 
 ## License

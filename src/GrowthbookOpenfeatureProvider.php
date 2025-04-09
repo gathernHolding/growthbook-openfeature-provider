@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Gathern\GrowthbookOpenfeatureProvider;
 
 use Growthbook\FeatureResult;
@@ -29,11 +31,7 @@ class GrowthbookOpenfeatureProvider extends AbstractProvider implements Provider
         public readonly string $apiHost = '',
         public readonly string $decryptionKey = '',
     ) {
-        $this->growthbook->initialize(
-            clientKey: $clientKey,
-            apiHost: $apiHost,
-            decryptionKey: $decryptionKey
-        );
+        $this->initialize();
     }
 
     public function resolveBooleanValue(string $flagKey, bool $defaultValue, ?EvaluationContext $context = null): IResolutionDetails
@@ -64,7 +62,7 @@ class GrowthbookOpenfeatureProvider extends AbstractProvider implements Provider
 
     }
 
-    public function initialize()
+    public function initialize(): void
     {
         $this->growthbook->initialize(
             clientKey: $this->clientKey,
@@ -73,12 +71,18 @@ class GrowthbookOpenfeatureProvider extends AbstractProvider implements Provider
         );
     }
 
+    /**
+     * @template T
+     *
+     * @param  \Growthbook\FeatureResult<T>  $feature
+     * @param  T  $defaultValue
+     */
     private function toResolutionDetails(FeatureResult $feature, mixed $defaultValue): IResolutionDetails
     {
 
         return (new ResolutionDetailsBuilder)
-            ->withValue($feature->value ?? $defaultValue) // @phpstan-ignore-line
-            ->withVariant($feature->source ?? '')
+            ->withValue(value: $feature->value ?? $defaultValue)// @phpstan-ignore-line
+            ->withVariant(variant: $feature->source)
             ->build();
 
     }
@@ -90,7 +94,11 @@ class GrowthbookOpenfeatureProvider extends AbstractProvider implements Provider
      */
     public function resolveValue(string $flagKey, ?EvaluationContext $context, mixed $defaultValue): IResolutionDetails
     {
-        $this->growthbook->withAttributes(attributes: (array) $context->getAttributes()->toArray());
+        /**
+         * @var array<string,mixed>
+         */
+        $attributes = $context?->getAttributes()->toArray() ?? [];
+        $this->growthbook->withAttributes(attributes: $attributes);
 
         return $this->toResolutionDetails(
             feature: $this->growthbook->getFeature(

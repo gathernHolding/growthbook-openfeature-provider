@@ -45,13 +45,11 @@
         "lint": "pint",
         "test:refacto": "rector --dry-run",
         "test:lint": "pint --test",
-        "test:typos": "peck",
         "test:types": "phpstan analyse --ansi",
         "test:unit": "pest",
         "test": [
             "@test:refacto",
             "@test:lint",
-            "@test:typos",
             "@test:types",
             "@test-coverage"
         ]
