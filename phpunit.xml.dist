@@ -20,6 +20,9 @@
             <directory suffix=".php">./src</directory>
         </include>
     </source>
-
+    <php>
+        <env name="GROWTHBOOK_API_HOST" value="http://localhost:3100" force="true" />
+        <env name="GROWTHBOOK_CLIENT_KEY" value="sdk-vyfPGhNfnTLCt1VZ" force="true" />
+    </php>
 
 </phpunit>
