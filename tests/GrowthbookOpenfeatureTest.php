@@ -10,7 +10,10 @@ describe('provider works successfully with openfeature', function (): void {
         $growthbook = \Mockery::mock(Growthbook::class)->makePartial();
         $growthbook->shouldReceive('initialize')->andReturnNull();
 
-        $features = [
+        $this->features = [
+            'test-boolean' => [
+                'defaultValue' => true,
+            ],
             'test-string' => [
                 'defaultValue' => 'ok',
             ],
@@ -24,7 +27,7 @@ describe('provider works successfully with openfeature', function (): void {
             ],
         ];
 
-        $growthbook->withFeatures($features);
+        $growthbook->withFeatures($this->features);
         $api = OpenFeatureAPI::getInstance();
         // configure a provider
         $api->setProvider(new GrowthbookOpenfeatureProvider(
@@ -39,19 +42,26 @@ describe('provider works successfully with openfeature', function (): void {
     });
 
     it('gets the boolean value successfully', function (): void {
-        expect($this->client->getBooleanValue(flagKey: 'test-boolean', defaultValue: false))->toBeFalse();
+        $flagKey = 'test-boolean';
+        expect($this->client->getBooleanValue(flagKey: 'test-boolean', defaultValue: false))->toBe($this->features[$flagKey]['defaultValue']);
     });
     it('gets the number value successfully', function (): void {
-        expect($this->client->getStringValue(flagKey: 'test-string', defaultValue: 'wrong'))->toEqual('ok');
+        $flagKey = 'test-string';
+        expect($this->client->getStringValue(flagKey: $flagKey, defaultValue: 'wrong'))->toEqual($this->features[$flagKey]['defaultValue']);
     });
     it('gets the integer value successfully', function (): void {
-        expect($this->client->getIntegerValue(flagKey: 'test-number', defaultValue: 0.0))->toEqual(1);
+        $flagKey = 'test-number';
+
+        expect($this->client->getIntegerValue(flagKey: $flagKey, defaultValue: 0.0))->toEqual($this->features[$flagKey]['defaultValue']);
     });
     it('gets the float value successfully', function (): void {
-        expect($this->client->getFloatValue(flagKey: 'test-number', defaultValue: 0.0))->toEqual(0.0);
+        $flagKey = 'test-number';
+
+        expect($this->client->getFloatValue(flagKey: $flagKey, defaultValue: 0.0))->toEqual(0.0);
     });
     it('gets the object value successfully', function (): void {
+        $flagKey = 'test-object';
 
-        expect($this->client->getObjectValue(flagKey: 'test-object', defaultValue: []))->toEqual(['sucess' => 'ok']);
+        expect($this->client->getObjectValue(flagKey: $flagKey, defaultValue: []))->toEqual($this->features[$flagKey]['defaultValue']);
     });
 });
