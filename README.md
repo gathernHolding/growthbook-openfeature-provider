@@ -6,14 +6,6 @@
 
 This is where your description should go. Try and limit it to a paragraph or two. Consider adding a small example.
 
-## Support us
-
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/growthbook-openfeature-provider.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/growthbook-openfeature-provider)
-
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
-
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
-
 ## Installation
 
 You can install the package via composer:
@@ -25,27 +17,39 @@ composer require gathern/growthbook-openfeature-provider
 ## Usage
 
 ```php
-$skeleton = new Gathern\GrowthbookOpenfeatureProvider();
-echo $skeleton->echoPhrase('Hello, Gathern!');
+use Cache\Adapter\Apcu\ApcuCachePool;
+
+    $growthbook Growthbook::create();
+    //By default, there is no caching enabled. You can enable it by passing any PSR16-compatible instance into the withCache method.
+    
+    // Any psr-16 library will work
+    $cache = new ApcuCachePool();
+
+    $growthbook ->withCache($cache);
+
+    $api = OpenFeatureAPI::getInstance();
+    $api->setProvider(new GrowthbookOpenfeatureProvider(
+            growthbook: Growthbook,
+            clientKey: '<Growthbook_CLIENT_KEY>',
+            apiHost: '<Growthbook_API_HOST>',
+        ));
+
+    $client = $api->getClient(GrowthbookOpenfeatureProvider::class, 'v1.17');
+
+$client->getStringValue(flagKey: 'enable-success-button', defaultValue: 'wrong');
 ```
+you can follow the usage  of [openfeature-php-package](https://openfeature.dev/docs/reference/technologies/server/php/#usage)  and docs of [growthbook-php-sdk](https://docs.growthbook.io/lib/php) for instance of growthbook
 
 ## Testing
 
 ```bash
-composer test
+composer test:unit
 ```
 
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
 
-## Contributing
-
-Please see [CONTRIBUTING](https://github.com/spatie/.github/blob/main/CONTRIBUTING.md) for details.
-
-## Security Vulnerabilities
-
-Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
 
 ## Credits
 
