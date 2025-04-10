@@ -9,14 +9,12 @@ use Growthbook\Growthbook;
 use OpenFeature\implementation\common\Metadata;
 use OpenFeature\implementation\provider\AbstractProvider;
 use OpenFeature\implementation\provider\ResolutionDetailsBuilder;
-use OpenFeature\interfaces\common\LoggerAwareTrait;
 use OpenFeature\interfaces\flags\EvaluationContext;
 use OpenFeature\interfaces\provider\Provider;
 use OpenFeature\interfaces\provider\ResolutionDetails as IResolutionDetails;
 
 class GrowthbookOpenfeatureProvider extends AbstractProvider implements Provider
 {
-
     protected static string $NAME = self::class;
 
     public function getMetadata(): Metadata
