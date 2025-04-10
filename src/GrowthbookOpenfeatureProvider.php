@@ -16,7 +16,6 @@ use OpenFeature\interfaces\provider\ResolutionDetails as IResolutionDetails;
 
 class GrowthbookOpenfeatureProvider extends AbstractProvider implements Provider
 {
-    use LoggerAwareTrait;
 
     protected static string $NAME = self::class;
 
