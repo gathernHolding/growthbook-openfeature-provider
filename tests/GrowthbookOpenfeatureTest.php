@@ -7,6 +7,23 @@ use OpenFeature\OpenFeatureAPI;
 describe('provider works successfully with openfeature', function (): void {
 
     beforeEach(function (): void {
+        $growthbook = \Mockery::mock(Growthbook::class)->makePartial();
+        $growthbook->shouldReceive('initialize')->andReturnNull();
+
+        $features = [
+            'test-string' => [
+                'defaultValue' => 'ok',
+            ],
+            'test-number' => [
+                'defaultValue' => 1,
+            ],
+            'test-object' => [
+                'defaultValue' => [
+                    'sucess' => 'ok',
+                ],
+            ],
+        ];
+        $growthbook->withFeatures($features);
         $api = OpenFeatureAPI::getInstance();
         // configure a provider
         $api->setProvider(new GrowthbookOpenfeatureProvider(

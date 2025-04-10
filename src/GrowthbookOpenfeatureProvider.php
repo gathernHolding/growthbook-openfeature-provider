@@ -23,7 +23,7 @@ class GrowthbookOpenfeatureProvider extends AbstractProvider implements Provider
     }
 
     public function __construct(
-        private Growthbook $growthbook,
+        private readonly Growthbook $growthbook,
         public readonly string $clientKey,
         public readonly string $apiHost = '',
         public readonly string $decryptionKey = '',
