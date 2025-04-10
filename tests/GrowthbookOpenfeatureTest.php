@@ -11,17 +11,17 @@ describe('provider works successfully with openfeature', function (): void {
         $growthbook->shouldReceive('initialize')->andReturnNull();
 
         $features = [
-            "test-string" => [
-                "defaultValue" => "ok"
+            'test-string' => [
+                'defaultValue' => 'ok',
             ],
-            "test-number" => [
-                "defaultValue" => 1
+            'test-number' => [
+                'defaultValue' => 1,
             ],
-            "test-object" => [
-                "defaultValue" => [
-                    "sucess" => "ok"
-                ]
-            ]
+            'test-object' => [
+                'defaultValue' => [
+                    'sucess' => 'ok',
+                ],
+            ],
         ];
 
         $growthbook->withFeatures($features);
@@ -35,7 +35,6 @@ describe('provider works successfully with openfeature', function (): void {
 
         // create a `client`
         $this->client = $api->getClient(GrowthbookOpenfeatureProvider::class, 'v1.17');
-
 
     });
 
