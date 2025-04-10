@@ -17,10 +17,15 @@ composer require gathern/growthbook-openfeature-provider
 ## Usage
 
 ```php
-use Cache\Adapter\Apcu\ApcuCachePool;
+<?php
+    use Cache\Adapter\Apcu\ApcuCachePool;
+    use Growthbook\Growthbook;
+    use OpenFeature\OpenFeatureAPI;
 
     $growthbook Growthbook::create();
-    //By default, there is no caching enabled. You can enable it by passing any PSR16-compatible instance into the withCache method.
+    //By default, there is no caching enabled.
+    // You can enable it by passing any PSR16-compatible
+    // instance into the withCache method.
     
     // Any psr-16 library will work
     $cache = new ApcuCachePool();
@@ -34,11 +39,58 @@ use Cache\Adapter\Apcu\ApcuCachePool;
             apiHost: '<Growthbook_API_HOST>',
         ));
 
-    $client = $api->getClient(GrowthbookOpenfeatureProvider::class, 'v1.17');
+    $client = $api->getClient(
+        GrowthbookOpenfeatureProvider::class,
+        'v1.17',
+         );
 
-$client->getStringValue(flagKey: 'enable-success-button', defaultValue: 'wrong');
+    $client->getStringValue
+    (
+        flagKey: 'enable-success-button',
+        defaultValue: 'wrong',
+    );
+
 ```
+if you need to get the flag value of specific user attributes you can  openfeature [evaluation-context](https://openfeature.dev/docs/reference/concepts/evaluation-context) and set the user data as attributes .
+
+```php
+<?php
+    use OpenFeature\implementation\flags\Attributes;
+    use OpenFeature\implementation\flags\MutableEvaluationContext;
+
+        $user_data = [
+            'name' => 'john Doe',
+            'age' => '20',
+            'gender' => 'male',
+            'nationality' => 'martian'
+            ];
+
+       echo $client->getBooleanValue(
+                flagKey: 'test-boolean',
+                defaultValue: false,
+                context: new MutableEvaluationContext(
+                    targetingKey: "targeting-key-value",
+                    attributes: new Attributes(attributesMap: $user_data)
+                )
+            );
+
+```
+
 you can follow the usage  of [openfeature-php-package](https://openfeature.dev/docs/reference/technologies/server/php/#usage)  and docs of [growthbook-php-sdk](https://docs.growthbook.io/lib/php) for instance of growthbook
+
+if you need to use all growthbook sdk features or any  feature service  throw the openfeature api to reach feature using `spatie/invade` [package](https://github.com/spatie/invade)  just [install it](https://github.com/spatie/invade?tab=readme-ov-file#installation)  and follow this example
+
+```php
+<?php
+
+$openfeatureAPI= invade($client)->api;
+$provider=invade($openfeatureAPI)->getProvider();
+$growthbook=invade($provider)->growthbook;
+print_r($growthbook->getFeatures());
+print_r($growthbook->getAttributes());
+print_r( $growthbook->getViewedExperiments());
+
+```
 
 ## Testing
 

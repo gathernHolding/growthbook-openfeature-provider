@@ -2,6 +2,8 @@
 
 use Gathern\GrowthbookOpenfeatureProvider\GrowthbookOpenfeatureProvider;
 use Growthbook\Growthbook;
+use OpenFeature\implementation\flags\Attributes;
+use OpenFeature\implementation\flags\MutableEvaluationContext;
 use OpenFeature\OpenFeatureAPI;
 
 describe('provider works successfully with openfeature', function (): void {
@@ -44,6 +46,25 @@ describe('provider works successfully with openfeature', function (): void {
     it('gets the boolean value successfully', function (): void {
         $flagKey = 'test-boolean';
         expect($this->client->getBooleanValue(flagKey: 'test-boolean', defaultValue: false))->toBe($this->features[$flagKey]['defaultValue']);
+    });
+    it('gets the boolean value successfully with user details', function (): void {
+        $flagKey = 'test-boolean';
+        $user_data = [
+            'name' => 'john Doe',
+            'age' => '20',
+            'gender' => 'male',
+            'nationality' => 'martian',
+        ];
+        expect(
+            value: $this->client->getBooleanValue(
+                flagKey: 'test-boolean',
+                defaultValue: false,
+                context: new MutableEvaluationContext(
+                    targetingKey: 'targeting-key-value',
+                    attributes: new Attributes(attributesMap: $user_data)
+                )
+            )
+        )->toBe($this->features[$flagKey]['defaultValue']);
     });
     it('gets the number value successfully', function (): void {
         $flagKey = 'test-string';
