@@ -11,29 +11,31 @@ describe('provider works successfully with openfeature', function (): void {
         $growthbook->shouldReceive('initialize')->andReturnNull();
 
         $features = [
-            'test-string' => [
-                'defaultValue' => 'ok',
+            "test-string" => [
+                "defaultValue" => "ok"
             ],
-            'test-number' => [
-                'defaultValue' => 1,
+            "test-number" => [
+                "defaultValue" => 1
             ],
-            'test-object' => [
-                'defaultValue' => [
-                    'sucess' => 'ok',
-                ],
-            ],
+            "test-object" => [
+                "defaultValue" => [
+                    "sucess" => "ok"
+                ]
+            ]
         ];
+
         $growthbook->withFeatures($features);
         $api = OpenFeatureAPI::getInstance();
         // configure a provider
         $api->setProvider(new GrowthbookOpenfeatureProvider(
-            growthbook: Growthbook::create(),
+            growthbook: $growthbook,
             clientKey: getenv('GROWTHBOOK_CLIENT_KEY'),
             apiHost: getenv('GROWTHBOOK_API_HOST'),
         ));
 
         // create a `client`
         $this->client = $api->getClient(GrowthbookOpenfeatureProvider::class, 'v1.17');
+
 
     });
 
